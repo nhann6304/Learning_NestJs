@@ -3,7 +3,11 @@ Các thư viện đã cài trong dự án
     - npm i class-transformer
     - npm i --save @nestjs/jwt
     - npm i --save @nestjs/config
+    - npm i bcrypt  | - npm i -D @types/bcrypt
+    - npm i cookie-parser | npm i -D @types/cookie-parser
+    
 NestJs
     - nest g middleware logger
     - nest g  mi /src/middlewares/tên
+    
     

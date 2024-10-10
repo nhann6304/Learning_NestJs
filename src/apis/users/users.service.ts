@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IUser } from 'src/interfaces/common/user.interface';
 import { Repository } from 'typeorm';
@@ -6,6 +6,7 @@ import { UserEntity } from './user.entity';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { create } from 'domain';
 import { v4 as uuidv4 } from 'uuid';
+import { hashPassWords } from 'src/utils/hashPass.untils';
 
 
 @Injectable()
@@ -18,8 +19,12 @@ export class UsersService {
 
 
     async createUsers(createUserDto: CreateUserDto) {
+
+
+
         console.log(createUserDto);
-        const newUser = await this.userRepository.create({ ...createUserDto, id: uuidv4() });
+        const hashPassword = await hashPassWords(createUserDto.password)
+        const newUser = await this.userRepository.create({ ...createUserDto, id: uuidv4(), password: hashPassword });
         return this.userRepository.save(newUser);
     }
 
@@ -63,6 +68,15 @@ export class UsersService {
             return result
         } else {
             throw new NotFoundException("User không tồn tại trong hệ thống");
+        }
+    }
+
+    async checkExistEmail(email: string) {
+        const isEmailExist = await this.findByEmail(email);
+        if (isEmailExist) {
+            throw new HttpException(`Email ${email} đã tồn tại`, HttpStatus.CONFLICT);
+        } else {
+            return true
         }
     }
 }

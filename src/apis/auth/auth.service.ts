@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginDto } from './auth.dto';
-import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { IUser } from 'src/interfaces/common/user.interface';
+import { LoginDto } from './auth.dto';
+import { UsersService } from '../users/users.service';
+import { comparePassword } from 'src/utils/hashPass.untils';
 
 @Injectable()
 export class AuthService {
@@ -18,13 +18,14 @@ export class AuthService {
         if (!user) {
             throw new UnauthorizedException('Người dùng không tồn tại');
         }
+        const checkPassword = await comparePassword(loginDto.password, user.password)
 
-        if (user.password !== loginDto.password) {
+        if (!checkPassword) {
             throw new UnauthorizedException('Sai mật khẩu');
+        } else {
+            const { password, ...userWithoutPassword } = user;
+            return userWithoutPassword;
         }
-
-        const { password, ...userWithoutPassword } = user;
-        return userWithoutPassword;
     }
 
 

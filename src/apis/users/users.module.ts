@@ -20,10 +20,6 @@ export class UsersModule implements NestModule {
         path: "users/create",
         method: RequestMethod.POST
       },
-      {
-        path: "users/:id/:postId",
-        method: RequestMethod.GET
-      },
     ).apply(AnotherMiddleware).forRoutes({
       path: "users/create",
       method: RequestMethod.POST

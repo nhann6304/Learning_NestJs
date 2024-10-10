@@ -1,11 +1,10 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
-import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './users/user.entity';
-import { AuthController } from './auth/auth.controller';
-import { AuthModule } from './auth/auth.module';
-import { UsersService } from './users/users.service';
+import { AuthController } from './apis/auth/auth.controller';
+import { AuthModule } from './apis/auth/auth.module';
+import { UsersModule } from './apis/users/users.module';
+import { UserEntity } from './apis/users/user.entity';
+
 
 @Module({
   imports: [
@@ -27,12 +26,5 @@ import { UsersService } from './users/users.service';
 })
 
 
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware) // Áp dụng middleware cho nào vào
-      .forRoutes({ path: "songs", method: RequestMethod.POST }); // đừng dẫn mà middleware sẻ áp dụng và áp dụng ở method nào\
-  }
-
-}
+export class AppModule { }
 

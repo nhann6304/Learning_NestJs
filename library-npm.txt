@@ -1,6 +1,8 @@
 Các thư viện đã cài trong dự án
     - npm i class-validator  => validate dữ liệu đầu vào
     - npm i class-transformer
+    - npm i --save @nestjs/jwt
+    - npm i --save @nestjs/config
 NestJs
     - nest g middleware logger
     - nest g  mi /src/middlewares/tên

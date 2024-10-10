@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } f
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { UsersService } from './users.service';
-import { AuthGuard } from './guards/auth/auth.guard';
 
 @Controller('users')
 @ApiTags("Test Api Users")

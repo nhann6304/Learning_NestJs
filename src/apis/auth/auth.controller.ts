@@ -1,6 +1,6 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Request as Req } from 'express';
+import { Request, Response } from 'express';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { LoginDto } from './auth.dto';
 import { AuthService } from './auth.service';
@@ -9,10 +9,30 @@ import { AuthService } from './auth.service';
 @ApiTags("Auth")
 export class AuthController {
     constructor(private authService: AuthService) { }
-    @UseGuards(AuthGuard)
-    @Post("/login")
-    async login(@Body() login: LoginDto, @Request() req: Req) {
-        // console.log(req.body); // Lấy value từ guards trả về
-        return this.authService.login(login)
+    @Post('login')
+    async login(@Body() loginDto: LoginDto, @Res() res: Response) {
+        const { token } = await this.authService.login(loginDto); // Lấy token từ authService
+
+        // Thiết lập cookie với token
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 5 * 60 * 1000,
+        });
+
+        return res.status(200).json({
+            message: "Đăng nhập thành công",
+            token
+        });
     }
+    @Get("getMe")
+    @UseGuards(AuthGuard)
+    async getMe(@Req() req: Request) {
+        const itMe = await this.authService.getProfile(req);
+        return {
+            message: "Lấy thông tin thành công",
+            itMe
+        }
+    }
+
 }

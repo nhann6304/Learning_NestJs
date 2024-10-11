@@ -1,14 +1,12 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './apis/auth/auth.controller';
 import { AuthModule } from './apis/auth/auth.module';
-import { UsersModule } from './apis/users/users.module';
 import { UserEntity } from './apis/users/user.entity';
-
+import { UsersModule } from './apis/users/users.module';
 
 @Module({
   imports: [
-    UsersModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -19,12 +17,9 @@ import { UserEntity } from './apis/users/user.entity';
       entities: [UserEntity],
       synchronize: true,
     }),
+    UsersModule,
     AuthModule,
   ],
   controllers: [AuthController],
-
 })
-
-
 export class AppModule { }
-

@@ -1,21 +1,21 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { AuthService } from 'src/apis/auth/auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) { }
+  constructor
+    (
+      private readonly jwtService: JwtService
+    ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest() as Request;
-    const { email, password } = request.body;
-
-    const user = await this.authService.validateUser({ email, password });
-    if (user) {
-      request.user = user; // Lưu thông tin người dùng vào request để có thể truy cập sau đó
-      return true;
+    const token = request.cookies.token;
+    if (token) {
+      return true
     } else {
-      throw new UnauthorizedException('Thông tin đăng nhập không hợp lệ');
+      throw new UnauthorizedException('Vui lòng đăng nhập lại');
     }
   }
 }

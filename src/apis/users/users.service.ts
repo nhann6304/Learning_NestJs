@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IUser } from 'src/interfaces/common/user.interface';
 import { Repository } from 'typeorm';
@@ -19,13 +19,16 @@ export class UsersService {
 
 
     async createUsers(createUserDto: CreateUserDto) {
+        const checkExistEmail = this.findByEmail(createUserDto.email);
+        if (checkExistEmail) {
+            throw new UnauthorizedException('Email đã tồn tại');
+        } else {
+            const hashPassword = await hashPassWords(createUserDto.password)
+            const newUser = await this.userRepository.create({ ...createUserDto, id: uuidv4(), password: hashPassword });
+            return this.userRepository.save(newUser);
+        }
 
 
-
-        console.log(createUserDto);
-        const hashPassword = await hashPassWords(createUserDto.password)
-        const newUser = await this.userRepository.create({ ...createUserDto, id: uuidv4(), password: hashPassword });
-        return this.userRepository.save(newUser);
     }
 
     async findAll() {
@@ -33,7 +36,6 @@ export class UsersService {
         const total = await this.userRepository.count()
         return { total, users };
     }
-
 
     async findOneUser(id: string) {
         const userFind = await this.userRepository.findOneBy({ id });

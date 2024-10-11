@@ -2,20 +2,13 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } f
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { UsersService } from './users.service';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 @Controller('users')
 @ApiTags("Test Api Users")
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class UsersController {
-
     constructor(private userService: UsersService) { }
-
-    // @Get()
-    // getUsers(@Query("sortBy") sortBy: string) {
-    //     return { userName: "Nhân", email: "huynhthanhnhan632004@gmail.com" }
-    // }
-
-
 
     @Post("create")
     @ApiOperation({ summary: "Tạo user" })

@@ -17,4 +17,7 @@ export class UserEntity implements IUser {
 
     @Column()
     password: string;
+
+    // @Column()
+    // refreshToken: string;
 }

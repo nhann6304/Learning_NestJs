@@ -43,7 +43,7 @@ export class AuthService {
     }
 
     async getMe(req: Request): Promise<IUser> {
-        const token = req.cookies.token;
+        const token = await req.cookies.token;
         if (token) {
             try {
                 const decode: IJwtPayload = await this.jwtService.verifyAsync(token);

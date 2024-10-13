@@ -28,10 +28,10 @@ export class AuthController {
     @Get("getMe")
     @UseGuards(AuthGuard)
     async getMe(@Req() req: Request) {
-        const itMe = await this.authService.getProfile(req);
+        const me = await this.authService.getMe(req);
         return {
             message: "Lấy thông tin thành công",
-            itMe
+            me
         }
     }
 

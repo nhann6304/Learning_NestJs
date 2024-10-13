@@ -32,20 +32,17 @@ export class AuthService {
 
     async login(loginDto: LoginDto) {
         const user = await this.validateUser(loginDto);
-
         if (!user) {
             throw new UnauthorizedException('Invalid credentials'); // Ném lỗi nếu không tìm thấy người dùng
         }
-
         const payload = { email: user.email, sub: user.id };
         const token = await this.jwtService.signAsync(payload); // Tạo token từ payload
-
         return {
             token,
         };
     }
 
-    async getProfile(req: Request): Promise<IUser> {
+    async getMe(req: Request): Promise<IUser> {
         const token = req.cookies.token;
         if (token) {
             try {

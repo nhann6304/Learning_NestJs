@@ -27,8 +27,6 @@ export class UsersService {
             const newUser = await this.userRepository.create({ ...createUserDto, id: uuidv4(), password: hashPassword });
             return this.userRepository.save(newUser);
         }
-
-
     }
 
     async findAll() {
@@ -52,6 +50,12 @@ export class UsersService {
         await this.userRepository.update(id, payload);
         return this.findOneUser(id)
     }
+
+    async saveTokenUser(id: string, token: string) {
+        return await this.userRepository.update(id, { token: token })
+    }
+
+
 
     async deleteUser(id: string) {
         const result = await this.userRepository.delete(id)

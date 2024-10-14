@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
+import { Request, response, Response } from 'express';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { LoginDto } from './auth.dto';
 import { AuthService } from './auth.service';
@@ -11,8 +11,8 @@ export class AuthController {
     constructor(private authService: AuthService) { }
     @Post('login')
     async login(@Body() loginDto: LoginDto, @Res() res: Response) {
-        const { token } = await this.authService.login(loginDto); // Lấy token từ authService
-
+        const { token, user } = await this.authService.login(loginDto); // Lấy token từ authService
+        await this.authService.saveToken(user.id, token);
         // Thiết lập cookie với token
         res.cookie("token", token, {
             httpOnly: true,
@@ -33,6 +33,11 @@ export class AuthController {
             message: "Lấy thông tin thành công",
             me
         }
+    }
+
+    @Post('logout')
+    async logout(@Res() response: Response) {
+        return await this.authService.logout(response)
     }
 
 }

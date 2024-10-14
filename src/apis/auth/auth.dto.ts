@@ -4,7 +4,7 @@ import { IUser } from "src/interfaces/common/user.interface";
 
 export class LoginDto implements Pick<IUser, "email" | "password"> {
 
-    // id: string;
+    id: string;
 
     @IsEmail({}, { message: "Email không đúng định dạng" })
     @ApiProperty({ default: "huynhthanhnhan632004@gmail.com" })

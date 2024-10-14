@@ -23,6 +23,8 @@ export class CreateUserDto implements IUser {
     @ApiProperty({ type: String, default: "thanhnhan" })
     password: string;
 
+    token: string;
+
 }
 
 export class UpdateUserDto extends CreateUserDto implements IUser {
@@ -30,4 +32,5 @@ export class UpdateUserDto extends CreateUserDto implements IUser {
     age: number;
     email: string;
     password: string;
+    token: string;
 }

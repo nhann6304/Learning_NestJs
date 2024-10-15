@@ -51,9 +51,9 @@ export class UsersService {
         return this.findOneUser(id)
     }
 
-    async saveTokenUser(id: string, token: string) {
-        return await this.userRepository.update(id, { token: token })
-    }
+    // async saveTokenUser(id: string, token: string) {
+    //     return await this.userRepository.update(id, { token: token })
+    // }
 
 
 

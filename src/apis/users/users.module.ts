@@ -3,13 +3,15 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
-import { AuthModule } from '../auth/auth.module'; // Đường dẫn đúng
+import { AuthModule } from '../common/auth/auth.module'; // Đường dẫn đúng
 import { ExampleMiddleware } from './middlewares/example/example.middleware';
 import { AnotherMiddleware } from './middlewares/another/another.middleware';
+import { TokenModule } from '../common/token/token.module';
 
 @Module({
   imports: [
-    forwardRef(() => AuthModule), // Sử dụng forwardRef để tránh vòng lặp
+    forwardRef(() => AuthModule),
+    forwardRef(() => TokenModule),
     TypeOrmModule.forFeature([UserEntity]),
   ],
   controllers: [UsersController],

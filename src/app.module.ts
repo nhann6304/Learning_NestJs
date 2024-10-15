@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthController } from './apis/auth/auth.controller';
-import { AuthModule } from './apis/auth/auth.module';
+import { AuthController } from './apis/common/auth/auth.controller';
+import { AuthModule } from './apis/common/auth/auth.module';
 import { UserEntity } from './apis/users/user.entity';
 import { UsersModule } from './apis/users/users.module';
+import { TokenModule } from './apis/common/token/token.module';
+import { TokenEntity } from './apis/common/token/token.entity';
 
 @Module({
   imports: [
@@ -14,11 +16,12 @@ import { UsersModule } from './apis/users/users.module';
       username: 'root',
       password: 'root',
       database: 'test_2',
-      entities: [UserEntity],
+      entities: [UserEntity, TokenEntity],
       synchronize: true,
     }),
     UsersModule,
     AuthModule,
+    TokenModule,
   ],
   controllers: [AuthController],
 })

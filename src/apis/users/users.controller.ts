@@ -6,7 +6,6 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 @Controller('users')
 @ApiTags("Test Api Users")
-@UseGuards(AuthGuard)
 export class UsersController {
     constructor(private userService: UsersService) { }
 

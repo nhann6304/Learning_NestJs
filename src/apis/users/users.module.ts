@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { AuthModule } from '../common/auth/auth.module'; // Đường dẫn đúng
 import { ExampleMiddleware } from './middlewares/example/example.middleware';
-import { AnotherMiddleware } from './middlewares/another/another.middleware';
 import { TokenModule } from '../common/token/token.module';
 
 @Module({
@@ -26,10 +25,10 @@ export class UsersModule implements NestModule {
         path: 'users/:id/:postId',
         method: RequestMethod.GET,
       })
-      .apply(AnotherMiddleware)
-      .forRoutes({
-        path: 'users/create',
-        method: RequestMethod.POST,
-      });
+    // .apply(AnotherMiddleware)
+    // .forRoutes({
+    //   path: 'users/create',
+    //   method: RequestMethod.POST,
+    // });
   }
 }

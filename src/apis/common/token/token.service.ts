@@ -10,7 +10,7 @@ import { IJwtPayload } from 'src/interfaces/common/jwt.interface';
 export class TokenService {
     constructor(
         private readonly jwtService: JwtService,
-        @InjectRepository(TokenEntity) // Inject repository cho TokenEntity
+        @InjectRepository(TokenEntity)
         private readonly tokenRepository: Repository<TokenEntity>
     ) { }
 
@@ -30,37 +30,16 @@ export class TokenService {
         return token;
     }
 
-    // async validateToken(token: string): Promise<boolean> {
-    //     try {
-    //         const result = await this.jwtService.verifyAsync(token);
-    //         console.log("tokenService:::", result);
-    //         return true;
-    //     } catch (error) {
-    //         if (error.name === 'TokenExpiredError') {
-    //             await this.deleteToken(token);
-    //             return false; // Trả về false để cho AuthGuard xử lý
-    //         }
-    //         throw new UnauthorizedException('Token không hợp lệ');
-    //     }
-    // }
-
     async validateToken(token: string, idUser: string): Promise<boolean> {
-        try {
-            const result = await this.jwtService.verifyAsync(token);
-            if (idUser === result.id) {
-                return true;
-            } else {
-                throw new UnauthorizedException('Token không trùng khớp');
-            }
-        } catch (error) {
-            if (error.name === 'TokenExpiredError') {
-                await this.deleteToken(token);
-                return false; // Trả về false để cho AuthGuard xử lý
-            }
-            throw new UnauthorizedException('Token không hợp lệ');
-        }
-    }
+        const result = await this.jwtService.decode(token);
 
+        if (idUser === result.id) {
+            return true;
+        } else {
+            throw new UnauthorizedException('Token không trùng khớp');
+        }
+
+    }
 
     async checkToken(token: string) {
         const decode: IJwtPayload = await this.jwtService.decode(token);
@@ -72,7 +51,7 @@ export class TokenService {
     }
 
     async createRefreshToken(userId: string): Promise<string> {
-        const refreshToken = await this.jwtService.signAsync({ userId }, { expiresIn: '7d' }); // Thời gian sống của refresh token
+        const refreshToken = await this.jwtService.signAsync({ userId }, { expiresIn: '5d' }); // Thời gian sống của refresh token
 
         // Lưu refresh token vào cơ sở dữ liệu
         const newToken = this.tokenRepository.create({

@@ -15,7 +15,7 @@ export class AuthController {
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
-            maxAge: 10 * 60 * 1000
+            maxAge: 15 * 24 * 60 * 60 * 1000  // 15 ngày
         });
 
         return res.status(200).json({
@@ -24,7 +24,6 @@ export class AuthController {
         });
     }
     @Get("getMe")
-    @UseGuards(AuthGuard)
     async getMe(@Req() req: Request) {
         const me = await this.authService.getMe(req);
         return {
@@ -34,7 +33,6 @@ export class AuthController {
     }
 
     @Post('logout')
-    @UseGuards(AuthGuard)
     async logout(@Res() response: Response, @Req() request: Request) {
         return await this.authService.logout(response, request)
     }

@@ -1,4 +1,4 @@
-import { AnotherMiddleware } from './another.middleware';
+import { AnotherMiddleware } from './auth.middleware';
 
 describe('AnotherMiddleware', () => {
   it('should be defined', () => {

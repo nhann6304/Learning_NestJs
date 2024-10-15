@@ -52,7 +52,6 @@ export class AuthService {
         if (token) {
             try {
                 const decode = await this.tokenService.checkToken(token);
-                console.log(decode);
                 const result = await this.userService.findByEmail(decode.email);
 
                 if (!result) {

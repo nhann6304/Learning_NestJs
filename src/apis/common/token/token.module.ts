@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TokenEntity } from './token.entity';
 import { TokenService } from './token.service';
-import { UsersModule } from '../../users/users.module';
+import { UsersModule } from '../../models/users/users.module';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 @Module({

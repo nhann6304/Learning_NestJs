@@ -1,5 +1,5 @@
 import { TokenEntity } from 'src/apis/common/token/token.entity';
-import { UserEntity } from 'src/apis/users/user.entity';
+import { UserEntity } from 'src/apis/models/users/user.entity';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
 export const mysqlConfig: MysqlConnectionOptions = {

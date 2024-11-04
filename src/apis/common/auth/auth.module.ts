@@ -12,7 +12,6 @@ import { TokenModule } from '../token/token.module';
         JwtModule,
         forwardRef(() => TokenModule),
         forwardRef(() => UsersModule),
-
     ],
     providers: [AuthService, AuthGuard],
     exports: [AuthService, JwtModule], // Xuất JwtModule

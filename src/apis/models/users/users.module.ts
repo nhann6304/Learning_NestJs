@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { AuthModule } from '../../common/auth/auth.module'; // Đường dẫn đúng
-import { ExampleMiddleware } from './middlewares/example/example.middleware';
+import { ExampleMiddleware } from '../../../middlewares/example/example.middleware';
 import { TokenModule } from '../../common/token/token.module';
 
 @Module({

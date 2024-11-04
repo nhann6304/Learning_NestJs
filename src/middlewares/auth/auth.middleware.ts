@@ -4,9 +4,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../../apis/models/users/users.service';
 import { TokenService } from 'src/apis/common/token/token.service';
 import { Request, Response } from 'express';
-import { UsersService } from '../../users.service';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {

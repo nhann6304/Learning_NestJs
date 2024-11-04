@@ -24,6 +24,7 @@ export class UsersController {
     @Get(':id')
     @ApiOperation({ summary: "Tìm user theo id" })
     getUserById(@Param('id') id: string) {
+        console.log(id);
         return this.userService.findOneUser(id)
     }
 

@@ -7,19 +7,11 @@ import { UsersModule } from './apis/users/users.module';
 import { TokenModule } from './apis/common/token/token.module';
 import { TokenEntity } from './apis/common/token/token.entity';
 import { AuthMiddleware } from './apis/users/middlewares/auth/auth.middleware';
+import { mysqlConfig } from './config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'test_2',
-      entities: [UserEntity, TokenEntity],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(mysqlConfig),
     UsersModule,
     AuthModule,
     TokenModule,
@@ -27,9 +19,7 @@ import { AuthMiddleware } from './apis/users/middlewares/auth/auth.middleware';
   controllers: [AuthController],
 })
 export class AppModule implements NestModule {
-
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes("*")
+    consumer.apply(AuthMiddleware).forRoutes('*');
   }
-
 }

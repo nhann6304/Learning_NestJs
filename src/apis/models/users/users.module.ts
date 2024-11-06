@@ -6,15 +6,31 @@ import { UserEntity } from './user.entity';
 import { AuthModule } from '../../common/auth/auth.module'; // Đường dẫn đúng
 import { ExampleMiddleware } from '../../../middlewares/example/example.middleware';
 import { TokenModule } from '../../common/token/token.module';
+import { CqrsModule } from '@nestjs/cqrs';
+import { CreateUserHandler } from './handler/create-user.handler';
+import { GetUserHandler } from './handler/get-user.handler';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
     forwardRef(() => AuthModule),
     forwardRef(() => TokenModule),
     TypeOrmModule.forFeature([UserEntity]),
+    CqrsModule,
+    ClientsModule.register([
+      {
+        name: 'NATS_STREAMING',
+        transport: Transport.NATS,
+        options: {
+          url: 'http://localhost:3000',
+          clusterId: 'test-cluster',
+          clientId: 'test-client',
+        },
+      },
+    ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, CreateUserHandler, GetUserHandler],
   exports: [UsersService],
 })
 export class UsersModule implements NestModule {

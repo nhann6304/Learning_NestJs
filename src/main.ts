@@ -10,10 +10,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   const configService = app.get(ConfigService);
-  app.setGlobalPrefix("api/v1");
+  app.setGlobalPrefix('api/v1');
 
   const config = new DocumentBuilder()
-    .setTitle("Leaning NestJs")
+    .setTitle('Leaning NestJs')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

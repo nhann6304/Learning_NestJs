@@ -1,0 +1,40 @@
+    1. Bảng Employee
+employee_id: Khóa chính.
+
+user_id: Khóa ngoại từ bảng User.
+role: Vai trò của nhân viên, ví dụ: Staff hoặc Manager.
+position: Vị trí công việc.
+date_hired: Ngày được tuyển dụng.
+employee_type: Loại nhân viên, ví dụ: Toàn thời gian, Bán thời gian.
+
+    2. Bảng Product
+product_id: Khóa chính cho mỗi sản phẩm.
+employee_id: Khóa ngoại liên kết đến nhân viên đã đăng sản phẩm.
+product_name: Tên sản phẩm.
+description: Mô tả sản phẩm.
+price: Giá sản phẩm.
+status: Trạng thái sản phẩm (ví dụ: Pending, Approved, Rejected).
+
+    3. Bảng ProductApproval
+approval_id: Khóa chính.
+product_id: Khóa ngoại từ bảng Product.
+approved_by: employee_id của nhân viên duyệt sản phẩm (chỉ Manager có quyền duyệt).
+approval_status: Trạng thái duyệt (Approved hoặc Rejected).
+approval_date: Ngày duyệt.
+
+
+Quy tắc quyền hạn trong hệ thống
+Nhân viên thông thường:
+Có thể tạo sản phẩm mới, nhưng trạng thái ban đầu sẽ là Pending.
+Không có quyền duyệt hoặc xóa sản phẩm của nhân viên khác.
+Quản lý (Manager):
+
+Có quyền duyệt sản phẩm (cập nhật trạng thái thành Approved hoặc Rejected).
+Có thể xóa sản phẩm.
+Có thể xóa tài khoản của nhân viên khác.
+Logic thực thi quyền hạn
+Trong ứng dụng, bạn có thể dùng hệ thống kiểm tra quyền hạn dựa trên trường role trong bảng Employee. Ví dụ:
+
+Khi nhân viên đăng sản phẩm, hệ thống đặt status = 'Pending'.
+Một quản lý có thể duyệt sản phẩm bằng cách cập nhật trạng thái.
+Nếu một quản lý xóa tài khoản nhân viên, hệ thống kiểm tra role để đảm bảo rằng chỉ những tài khoản có role = 'Manager' mới thực hiện thao tác này.

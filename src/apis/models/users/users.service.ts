@@ -7,6 +7,9 @@ import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { create } from 'domain';
 import { v4 as uuidv4 } from 'uuid';
 import { hashPassWords } from 'src/utils/hashPass.untils';
+import { CreateUserCommand } from './command/create-user.command';
+import { CommandBus } from '@nestjs/cqrs';
+import { NatsStreamingContext } from '@nestjs-plugins/nestjs-nats-streaming-transport';
 
 
 @Injectable()
@@ -14,7 +17,9 @@ export class UsersService {
 
     constructor(
         @InjectRepository(UserEntity)
-        private userRepository: Repository<UserEntity>
+        private userRepository: Repository<UserEntity>,
+        private readonly commandBus: CommandBus,
+
     ) { }
 
 
@@ -80,5 +85,22 @@ export class UsersService {
         } else {
             return true
         }
+    }
+
+    async createUsers1(createUserDto: CreateUserDto) {
+        const checkExistEmail = this.findByEmail(createUserDto.email);
+        if (checkExistEmail) {
+            throw new UnauthorizedException('Email đã tồn tại');
+        } else {
+            const hashPassword = await hashPassWords(createUserDto.password)
+            const newUser = await this.userRepository.create({ ...createUserDto, id: uuidv4(), password: hashPassword });
+            return this.userRepository.save(newUser);
+        }
+    }
+
+
+    async createCqrs(userData: CreateUserDto, content: NatsStreamingContext) {
+        // console.log("này là gì ???", content);
+        return this.commandBus.execute(new CreateUserCommand(userData));
     }
 }
